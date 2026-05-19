@@ -1,0 +1,314 @@
+# dashboard.html (Netlify Ready)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard E-Makh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+/* ================= GLOBAL ================= */
+body {
+    background: linear-gradient(120deg, #eef2ff, #f8fafc);
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    box-shadow: 0 6px 20px rgba(79,70,229,0.2);
+}
+
+/* ================= TITLE ================= */
+.page-title {
+    text-align: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: #3730a3;
+    margin-bottom: 30px;
+}
+
+/* ================= CAROUSEL ================= */
+.custom-carousel {
+    max-width: 420px;
+    margin: auto;
+    position: relative;
+}
+
+/* ================= CARD (PORTRAIT) ================= */
+.santri-card {
+    background: linear-gradient(145deg, #ffffff, #eef2ff);
+    border-radius: 28px;
+    padding: 50px 20px 40px;
+    text-align: center;
+    height: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 60px rgba(15,23,42,0.15);
+}
+
+/* BAGIAN ATAS */
+.santri-card h5 {
+    margin-top: 20px;
+    margin-bottom: 4px;
+    font-weight: 800;
+    color: #3730a3;
+}
+
+.santri-card p {
+    margin-bottom: 20px;
+}
+
+.santri-card > div:first-child {
+    margin-top: 30px;
+}
+
+.point-badge {
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+    color: white;
+    border-radius: 50px;
+    padding: 6px 18px;
+}
+
+/* BUTTON */
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border: none;
+    border-radius: 999px;
+}
+
+/* ================= SLIDE INDICATOR ================= */
+.slide-indicator-bottom {
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* ================= ARROW ================= */
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+}
+
+.carousel-control-prev {
+    left: -80px;
+}
+
+.carousel-control-next {
+    right: -80px;
+}
+
+/* SQUARE STYLE */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-control-prev-icon::after {
+    content: '‹';
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.carousel-control-next-icon::after {
+    content: '›';
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .carousel-control-prev {
+        left: 5px;
+    }
+
+    .carousel-control-next {
+        right: 5px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <span class="navbar-brand fw-bold">E-Makh</span>
+
+        <div class="d-flex gap-2">
+
+            <a href="atur-santri.html" class="btn btn-light btn-sm fw-semibold">
+                ⚙️ Atur Santri
+            </a>
+
+           <!-- TOMBOL LOGOUT -->
+             <button onclick="logout()" class="btn btn-danger btn-sm"> Logout </button>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <h4 class="page-title">Tambah Poin Pelanggaran</h4>
+
+    <div class="custom-carousel">
+
+        <div id="carouselSantri" class="carousel slide">
+
+            <div class="carousel-inner" id="carouselData">
+
+                <!-- LOADING -->
+                <div class="text-center mt-5">
+                    <div class="spinner-border text-primary"></div>
+                    <p class="mt-3">Memuat data...</p>
+                </div>
+
+            </div>
+
+            <button 
+                class="carousel-control-prev" 
+                type="button"
+                data-bs-target="#carouselSantri" 
+                data-bs-slide="prev">
+
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <button 
+                class="carousel-control-next" 
+                type="button"
+                data-bs-target="#carouselSantri" 
+                data-bs-slide="next">
+
+                <span class="carousel-control-next-icon"></span>
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+// ================= LOGIN CHECK =================
+if (!localStorage.getItem('login')) {
+    window.location.href = 'login.html';
+}
+
+// ================= LOGOUT =================
+function logout() {
+
+    localStorage.removeItem('login');
+
+    window.location.href = 'login.html';
+}
+
+// ================= CAROUSEL =================
+new bootstrap.Carousel('#carouselSantri', {
+    interval: false,
+    ride: false,
+    wrap: false
+});
+
+// ================= LOAD DATA =================
+fetch('http://localhost/project-software/api/pelanggaran/get.php')
+
+.then(res => res.json())
+
+.then(response => {
+
+    const data = response.data;
+
+    let html = '';
+
+    // VALIDASI DATA
+    if (!data || data.length === 0) {
+
+        html = `
+            <div class="text-center mt-5">
+                <h5>Tidak ada data siswa</h5>
+            </div>
+        `;
+
+        document.getElementById('carouselData').innerHTML = html;
+
+        return;
+    }
+
+    data.forEach((item, index) => {
+
+        html += `
+
+        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+
+            <div class="santri-card">
+
+                <div>
+                    <h5>${item.nama_siswa}</h5>
+                    <p>Kelas: ${item.kelas}</p>
+                </div>
+
+                <div>
+                    <span class="badge point-badge">
+                        Total Poin: ${item.poin}
+                    </span>
+                </div>
+
+                <div>
+
+                    <a 
+                        href="tambah-pelanggaran.html?id=${item.id_siswa}" 
+                        class="btn btn-danger w-100">
+
+                        Tambah Poin
+                    </a>
+
+                    <div class="slide-indicator-bottom">
+                        ${index + 1} / ${data.length}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById('carouselData').innerHTML = html;
+})
+
+.catch(err => {
+
+    console.log(err);
+
+    document.getElementById('carouselData').innerHTML = `
+        <div class="text-center mt-5">
+            <h5>Gagal mengambil data</h5>
+        </div>
+    `;
+});
+
+</script>
+
+</body>
+</html>
+
