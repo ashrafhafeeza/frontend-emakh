@@ -176,22 +176,17 @@
 <script>
 
 if (localStorage.getItem('login')) {
-
     window.location.href = 'dashboard.html';
 }
 
 function showAlert(message) {
-
     const alertBox = document.getElementById('alertBox');
-
     alertBox.style.display = 'block';
-
     alertBox.innerText = message;
 }
 
 document
 .getElementById('loginForm')
-
 .addEventListener('submit', function(event){
 
     event.preventDefault();
@@ -207,48 +202,22 @@ document
         .trim();
 
     if (!username || !password) {
-
         showAlert('Username dan password wajib diisi');
-
         return;
     }
 
-    fetch('https://back-end47722.up.railway.app/api/login.php', {
+    // ===== DUMMY LOGIN =====
+    const DUMMY_USER = "admin";
+    const DUMMY_PASS = "123456";
 
-        method: 'POST',
+    if (username === DUMMY_USER && password === DUMMY_PASS) {
 
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        localStorage.setItem('login', 'true');
+        window.location.href = 'dashboard.html';
 
-        body: JSON.stringify({
-            username,
-            password
-        })
-    })
-
-    .then(res => res.json())
-
-    .then(response => {
-
-        if (response.status === 'success') {
-
-            localStorage.setItem('login', 'true');
-
-            window.location.href = 'dashboard.html';
-
-        } else {
-
-            showAlert(response.message);
-        }
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
-        showAlert('Gagal terhubung ke server');
-    });
+    } else {
+        showAlert('Username atau password salah');
+    }
 
 });
 
