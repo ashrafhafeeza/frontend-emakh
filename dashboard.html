@@ -223,101 +223,90 @@ new bootstrap.Carousel('#carouselSantri', {
     wrap: false
 });
 
-// ================= DUMMY DATA =================
-const data = [
-
-    {
-        id_siswa: 1,
-        nama_siswa: 'Ahmad Fauzan',
-        kelas: 'XI RPL 1',
-        poin: 15
-    },
-
-    {
-        id_siswa: 2,
-        nama_siswa: 'Rizky Maulana',
-        kelas: 'XI TKJ 2',
-        poin: 5
-    },
-
-    {
-        id_siswa: 3,
-        nama_siswa: 'Fajar Ramadhan',
-        kelas: 'XII RPL 3',
-        poin: 22
-    }
-];
-
-// ================= RENDER =================
-let html = '';
-
-data.forEach((item, index) => {
-
-    html += `
-    
-    <div class="carousel-item ${index === 0 ? 'active' : ''}">
-
-        <div class="santri-card">
-
-            <div>
-
-                <h5>${item.nama_siswa}</h5>
-
-                <p>Kelas: ${item.kelas}</p>
-
-            </div>
-
-            <div>
-
-                <span class="badge point-badge">
-                    Total Poin: ${item.poin}
-                </span>
-
-            </div>
-
-            <div>
-
-                <a 
-                    href="tambah-pelanggaran.html?id=${item.id_siswa}"
-                    class="btn btn-danger w-100">
-
-                    Tambah Poin
-
-                </a>
-
-                <div class="slide-indicator-bottom">
-                    ${index + 1} / ${data.length}
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-    `;
-});
-
-document.getElementById('carouselData').innerHTML = html;
-
-/*
-
-================ FETCH ASLI =================
-
-fetch('https://backend-lu/api/pelanggaran/get.php')
+// ================= LOAD DATA RAILWAY =================
+fetch('https://back-end47722.up.railway.app/api/siswa/get.php')
 
 .then(res => res.json())
 
 .then(response => {
 
+    const data = response.data;
+
+    let html = '';
+
+    if (!data || data.length === 0) {
+
+        html = `
+        <div class="text-center text-muted mt-5">
+            Belum ada data santri
+        </div>
+        `;
+
+        document.getElementById('carouselData').innerHTML = html;
+
+        return;
+    }
+
+    data.forEach((item, index) => {
+
+        html += `
+        
+        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+
+            <div class="santri-card">
+
+                <div>
+
+                    <h5>${item.nama_siswa}</h5>
+
+                    <p>Kelas: ${item.kelas}</p>
+
+                </div>
+
+                <div>
+
+                    <span class="badge point-badge">
+                        Total Poin: ${item.total_poin || 0}
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <a 
+                        href="tambah-pelanggaran.html?id=${item.id_siswa}"
+                        class="btn btn-danger w-100">
+
+                        Tambah Poin
+
+                    </a>
+
+                    <div class="slide-indicator-bottom">
+                        ${index + 1} / ${data.length}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        `;
+    });
+
+    document.getElementById('carouselData').innerHTML = html;
 })
 
 .catch(err => {
 
-})
+    console.log(err);
 
-*/
+    document.getElementById('carouselData').innerHTML = `
+        <div class="text-danger text-center mt-5">
+            Gagal mengambil data dari server
+        </div>
+    `;
+});
 
 </script>
-
 </body>
 </html>

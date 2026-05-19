@@ -178,12 +178,15 @@ if (!localStorage.getItem('login')) {
 
 <script>
 
-// ================= AMBIL PARAMETER ID =================
+if (!localStorage.getItem('login')) {
+
+    window.location.href = 'index.html';
+}
+
 const params = new URLSearchParams(window.location.search);
 
 const id_siswa = params.get('id');
 
-// VALIDASI ID
 if (!id_siswa) {
 
     alert('ID siswa tidak ditemukan');
@@ -191,10 +194,8 @@ if (!id_siswa) {
     window.location.href = 'dashboard.html';
 }
 
-// SIMPAN KE INPUT HIDDEN
 document.getElementById('id_siswa').value = id_siswa;
 
-// ================= AUTO ISI POIN =================
 document
 .getElementById('kategori')
 
@@ -203,9 +204,7 @@ document
     document.getElementById('poin').value = this.value;
 });
 
-// ================= LOAD DATA SISWA =================
-// NANTI GANTI URL BACKEND RAILWAY
-fetch(`http://localhost/project-software/api/siswa/detail.php?id=${id_siswa}`)
+fetch(`https://back-end47722.up.railway.app/api/siswa/detail.php?id=${id_siswa}`)
 
 .then(res => res.json())
 
@@ -236,7 +235,6 @@ fetch(`http://localhost/project-software/api/siswa/detail.php?id=${id_siswa}`)
     alert('Gagal mengambil data siswa');
 });
 
-// ================= SUBMIT =================
 document
 .getElementById('formPelanggaran')
 
@@ -257,7 +255,6 @@ document
         .getElementById('poin')
         .value;
 
-    // VALIDASI
     if (!jenis || !poin) {
 
         alert('Data belum lengkap');
@@ -265,24 +262,7 @@ document
         return;
     }
 
-    if (poin <= 0) {
-
-        alert('Poin harus lebih dari 0');
-
-        return;
-    }
-
-    if (poin > 100) {
-
-        alert('Poin maksimal 100');
-
-        return;
-    }
-
-    // ================= FETCH API =================
-    // NANTI GANTI URL BACKEND RAILWAY
-
-    fetch('http://localhost/project-software/api/pelanggaran/tambah.php', {
+    fetch('https://back-end47722.up.railway.app/api/pelanggaran/tambah.php', {
 
         method: 'POST',
 
