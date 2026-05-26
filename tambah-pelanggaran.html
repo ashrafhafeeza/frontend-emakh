@@ -236,63 +236,40 @@ fetch(`https://back-end47722.up.railway.app/api/pelanggaran/get.php?id=${id_sisw
 
 document
 .getElementById('formPelanggaran')
-
 .addEventListener('submit', function(event){
 
     event.preventDefault();
 
-    const id = document
-        .getElementById('id_siswa')
-        .value;
+    const id = document.getElementById('id_siswa').value;
+    const jenis = document.getElementById('jenis').value.trim();
+    const kategori = document.getElementById('kategori').value;
+    let poin = document.getElementById('poin').value;
 
-    const jenis = document
-        .getElementById('jenis')
-        .value
-        .trim();
+    if (!poin) {
+        poin = kategori;
+    }
 
-    const poin = document
-        .getElementById('poin')
-        .value;
-
-    if (!jenis || !poin) {
-
+    if (!id || !jenis || !kategori || !poin) {
         alert('Data belum lengkap');
-
         return;
     }
 
     fetch('https://back-end47722.up.railway.app/api/pelanggaran/tambah.php', {
-
         method: 'POST',
-
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-
-        body: `
-            id_siswa=${encodeURIComponent(id)}
-            &jenis=${encodeURIComponent(jenis)}
-            &poin=${encodeURIComponent(poin)}
-        `
+        body:
+            `id_siswa=${encodeURIComponent(id)}&jenis=${encodeURIComponent(jenis)}&poin=${encodeURIComponent(poin)}`
     })
 
     .then(res => res.json())
-
     .then(response => {
-
         alert(response.message);
 
         if (response.status === 'success') {
-
             window.location.href = 'index.html';
         }
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
-        alert('Gagal terhubung ke server');
     });
 });
 
