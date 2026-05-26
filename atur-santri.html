@@ -409,32 +409,41 @@ function loadData() {
 }
 
 function submitTambahSantri(event) {
-
     event.preventDefault();
 
     const nama = document.getElementById('namaSantri').value.trim();
     const kelas = document.getElementById('kelasSantri').value.trim();
 
     fetch('https://back-end47722.up.railway.app/api/siswa/tambah.php', {
-
         method: 'POST',
-
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-
         body: `nama=${encodeURIComponent(nama)}&kelas=${encodeURIComponent(kelas)}`
     })
 
-    .then(response => response.json())
+    .then(res => res.text())
 
-    .then(response => {
+    .then(text => {
 
-        alert(response.message);
+        console.log("Response tambah.php:", text);
 
-        if (response.status === 'success') {
-            tambahModal.hide();
-            loadData();
+        try {
+            const response = JSON.parse(text);
+
+            alert(response.message);
+
+            if (response.status === 'success') {
+                tambahModal.hide();
+                loadData();
+            }
+
+        } catch (err) {
+
+            console.error("Response bukan JSON:");
+            console.log(text);
+
+            alert("tambah.php error — cek Console");
         }
     })
 
