@@ -115,7 +115,7 @@ Tambah Pelanggaran
         Simpan
     </button>
 
-    <a href="dashboard.html" class="btn btn-secondary">
+    <a href="index.html" class="btn btn-secondary">
         Kembali
     </a>
 </div>
@@ -137,7 +137,7 @@ const id_siswa = params.get("id");
 
 if (!id_siswa) {
     alert("ID siswa tidak ditemukan");
-    window.location.href = "dashboard.html";
+    window.location.href = "index.html";
 }
 
 document.getElementById("id_siswa").value = id_siswa;
@@ -156,7 +156,7 @@ fetch(`https://back-end47722.up.railway.app/api/pelanggaran/get.php?id=${id_sisw
 
     if (response.status !== "success") {
         alert("Siswa tidak ditemukan");
-        window.location.href = "dashboard.html";
+        window.location.href = "index.html";
         return;
     }
 
@@ -217,7 +217,7 @@ document
         alert(response.message);
 
         if (response.status === "success") {
-            window.location.href = "dashboard.html";
+            window.location.href = "index.html";
         }
     })
 
