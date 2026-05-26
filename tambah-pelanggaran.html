@@ -203,7 +203,7 @@ document
     document.getElementById('poin').value = this.value;
 });
 
-fetch(`https://back-end47722.up.railway.app/api/siswa/get.php?id=${id_siswa}`)
+fetch(`https://back-end47722.up.railway.app/api/pelanggaran/get.php?id=${id_siswa}`)
 
 .then(res => res.json())
 
@@ -261,7 +261,7 @@ document
         return;
     }
 
-    fetch('https://back-end47722.up.railway.app/api/siswa/tambah.php', {
+    fetch('https://back-end47722.up.railway.app/api/pelanggaran/tambah.php', {
 
         method: 'POST',
 
