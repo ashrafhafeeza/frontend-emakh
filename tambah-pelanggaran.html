@@ -204,7 +204,7 @@ document
     document.getElementById('poin').value = this.value;
 });
 
-fetch(`https://back-end47722.up.railway.app/api/siswa/detail.php?id=${id_siswa}`)
+fetch(`https://back-end47722.up.railway.app/api/siswa/get.php?id=${id_siswa}`)
 
 .then(res => res.json())
 
