@@ -176,7 +176,7 @@
 <script>
 
 if (localStorage.getItem('login')) {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'index.html';
 }
 
 function showAlert(message) {
@@ -213,7 +213,7 @@ document
     if (username === DUMMY_USER && password === DUMMY_PASS) {
 
         localStorage.setItem('login', 'true');
-        window.location.href = 'dashboard.html';
+        window.location.href = 'index.html';
 
     } else {
         showAlert('Username atau password salah');
